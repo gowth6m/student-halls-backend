@@ -8,7 +8,7 @@ This is a backend for the Student Halls project. It is a RESTful API that allows
 
 1. Clone the repository
 2. Run `go mod download` to download the dependencies
-3. Run `go run cmd/server/main.go` to start the server
+3. Run `go run cmd/server/main.go` or `make server` to start the server
 4. The server will be running on `localhost:8080`
 
 ## Endpoints
