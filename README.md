@@ -2,9 +2,9 @@
 
 ## Description
 
-This is a backend for the Student Halls project. It is a RESTful API that allows users to create, read, update, and delete data from a MongoDB. The architecture is a serverless appraoch using Vercel's serverless functions. The API is built with Go using Go Gin Gonic and the MongoDB driver.
+This is a backend for the Student Halls project. It is a RESTful API that allows users to create, read, update, and delete data from a MongoDB. The architecture is a serverless appraoch using Vercel's serverless functions. The API is built with Go using Gin Gonic and the MongoDB driver.
 
-## How to run
+## How to run server
 
 1. Clone the repository
 2. Run `go mod download` to download the dependencies
