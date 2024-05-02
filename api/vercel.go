@@ -1,11 +1,8 @@
 package handler
 
 import (
-	"log"
 	"net/http"
-	"student-halls.com/internal/config"
-	"student-halls.com/internal/db"
-	"student-halls.com/internal/routes"
+	"student-halls.com/pkg/serverless"
 )
 
 // @title Student Halls API
@@ -18,14 +15,6 @@ import (
 // @in header
 // @name Authorization
 func Handler(w http.ResponseWriter, r *http.Request) {
-	err := config.LoadConfig()
-	if err != nil {
-		log.Fatal("Error loading config: ", err)
-	}
-
-	db.ConnectToMongoDB()
-	defer db.DisconnectFromMongoDB()
-
-	router := routes.SetupRoutes()
+	router := serverless.Initialize()
 	router.ServeHTTP(w, r)
 }

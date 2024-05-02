@@ -7,7 +7,7 @@
     "rewrites": [
         {
             "source": "(.*)",
-            "destination": "cmd/api/vercel.go"
+            "destination": "api/vercel.go"
         }
     ],
     "headers": [
