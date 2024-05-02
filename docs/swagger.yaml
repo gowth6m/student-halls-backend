@@ -1,109 +1,46 @@
 basePath: /v0
 definitions:
-  product.CreateProductRequest:
+  university.CreateUniversityRequest:
     properties:
-      category:
+      coverImage:
         type: string
-      description:
-        type: string
-      name:
-        type: string
-      sellerId:
-        type: string
-      variants:
+      halls:
         items:
-          $ref: '#/definitions/product.CreateVariantRequest'
+          type: string
         type: array
-    required:
-    - category
-    - name
-    - sellerId
-    - variants
-    type: object
-  product.CreateVariantRequest:
-    properties:
-      description:
+      location:
         type: string
       name:
         type: string
-      price:
-        type: number
-      stock:
+      numberOfStudents:
         type: integer
+      website:
+        type: string
     required:
+    - coverImage
+    - halls
+    - location
     - name
-    - price
-    - stock
+    - numberOfStudents
+    - website
     type: object
-  product.ProductResponse:
+  university.UniversityResponse:
     properties:
-      category:
+      coverImage:
         type: string
-      createdAt:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      seller:
-        type: string
-      updatedAt:
-        type: string
-      variants:
+      halls:
         items:
-          $ref: '#/definitions/product.VariantResponse'
+          type: string
         type: array
-    type: object
-  product.VariantResponse:
-    properties:
-      createdAt:
-        type: string
-      description:
-        type: string
       id:
+        type: string
+      location:
         type: string
       name:
         type: string
-      price:
-        type: number
-      stock:
+      numberOfStudents:
         type: integer
-      updatedAt:
-        type: string
-    type: object
-  shop.CreateShopRequest:
-    properties:
-      address:
-        type: string
-      description:
-        type: string
-      name:
-        type: string
-      ownerId:
-        type: string
-    required:
-    - name
-    - ownerId
-    type: object
-  shop.ShopResponse:
-    properties:
-      address:
-        type: string
-      createdAt:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      ownerId:
-        type: string
-      products:
-        items:
-          $ref: '#/definitions/product.ProductResponse'
-        type: array
-      updatedAt:
+      website:
         type: string
     type: object
   user.CreateUserRequest:
@@ -116,10 +53,12 @@ definitions:
         type: string
       password:
         type: string
-      phone:
+      university:
         type: string
       username:
         type: string
+      yearOfStudy:
+        type: integer
     required:
     - email
     - password
@@ -152,10 +91,12 @@ definitions:
         type: string
       lastName:
         type: string
-      phone:
+      university:
         type: string
       username:
         type: string
+      yearOfStudy:
+        type: integer
     type: object
 host: api.student-halls.com
 info:
@@ -164,47 +105,47 @@ info:
   title: Student Halls API
   version: "1"
 paths:
-  /product/all:
+  /university/all:
     get:
       consumes:
       - application/json
-      description: Get all products
+      description: Get all universities
       produces:
       - application/json
       responses:
         "200":
-          description: Products retrieved successfully
+          description: Universities retrieved successfully
           schema:
             items:
-              $ref: '#/definitions/product.ProductResponse'
+              $ref: '#/definitions/university.UniversityResponse'
             type: array
         "500":
           description: Internal server error
           schema:
             additionalProperties: true
             type: object
-      summary: Get all products
+      summary: Get all universities
       tags:
-      - products
-  /product/create:
+      - universities
+  /university/create:
     post:
       consumes:
       - application/json
-      description: Create a new product
+      description: Create a new university
       parameters:
-      - description: Product object to be created
+      - description: University object to be created
         in: body
-        name: product
+        name: university
         required: true
         schema:
-          $ref: '#/definitions/product.CreateProductRequest'
+          $ref: '#/definitions/university.CreateUniversityRequest'
       produces:
       - application/json
       responses:
         "201":
-          description: Product created successfully
+          description: University created successfully
           schema:
-            $ref: '#/definitions/product.ProductResponse'
+            $ref: '#/definitions/university.UniversityResponse'
         "400":
           description: Invalid request format or parameters
           schema:
@@ -215,105 +156,40 @@ paths:
           schema:
             additionalProperties: true
             type: object
-      security:
-      - BearerAuth: []
-      summary: Create a new product
+      summary: Create a new university
       tags:
-      - products
-  /product/createMany:
-    post:
+      - universities
+  /university/id/{id}:
+    get:
       consumes:
       - application/json
-      description: Create many products
+      description: Get university by ID
       parameters:
-      - description: Products to be created
-        in: body
-        name: products
+      - description: University ID
+        in: path
+        name: id
         required: true
-        schema:
-          items:
-            $ref: '#/definitions/product.CreateProductRequest'
-          type: array
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Products created successfully
-          schema:
-            items:
-              $ref: '#/definitions/product.ProductResponse'
-            type: array
-        "400":
-          description: Invalid request format or parameters
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties: true
-            type: object
-      security:
-      - BearerAuth: []
-      summary: Create many products
-      tags:
-      - products
-  /shop/all:
-    post:
-      consumes:
-      - application/json
-      description: Get all shops
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: Shops retrieved successfully
+          description: University retrieved successfully
           schema:
-            items:
-              $ref: '#/definitions/shop.ShopResponse'
-            type: array
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties: true
-            type: object
-      summary: Get all shops
-      tags:
-      - shops
-  /shop/create:
-    post:
-      consumes:
-      - application/json
-      description: Create a new shop
-      parameters:
-      - description: Shop object to be created
-        in: body
-        name: shop
-        required: true
-        schema:
-          $ref: '#/definitions/shop.CreateShopRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Shop created successfully
-          schema:
-            $ref: '#/definitions/shop.ShopResponse'
+            $ref: '#/definitions/university.UniversityResponse'
         "400":
           description: Invalid request format or parameters
           schema:
             additionalProperties: true
             type: object
-        "500":
-          description: Internal server error
+        "404":
+          description: University not found
           schema:
             additionalProperties: true
             type: object
-      security:
-      - BearerAuth: []
-      summary: Create a new shop
+      summary: Get university by ID
       tags:
-      - shops
+      - universities
   /user/{username}:
     get:
       consumes:
