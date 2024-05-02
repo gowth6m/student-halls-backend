@@ -15,6 +15,7 @@ import (
 // @in header
 // @name Authorization
 func Handler(w http.ResponseWriter, r *http.Request) {
-	router := serverless.Initialize()
+	router, cleanup := serverless.Initialize()
+	defer cleanup()
 	router.ServeHTTP(w, r)
 }

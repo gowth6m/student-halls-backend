@@ -157,12 +157,13 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 	}
 
 	userRes := UserResponse{
-		ID:        user.ID.Hex(),
-		Username:  user.Username,
-		Email:     user.Email,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		Phone:     user.Phone,
+		ID:          user.ID.Hex(),
+		Username:    user.Username,
+		Email:       user.Email,
+		FirstName:   user.FirstName,
+		LastName:    user.LastName,
+		University:  user.University.Hex(),
+		YearOfStudy: user.YearOfStudy,
 	}
 
 	api.Success(c, http.StatusOK, "User logged in successfully", LoginResponse{

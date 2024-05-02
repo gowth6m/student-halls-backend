@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/product/all": {
+        "/university/all": {
             "get": {
-                "description": "Get all products",
+                "description": "Get all universities",
                 "consumes": [
                     "application/json"
                 ],
@@ -25,16 +25,16 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "universities"
                 ],
-                "summary": "Get all products",
+                "summary": "Get all universities",
                 "responses": {
                     "200": {
-                        "description": "Products retrieved successfully",
+                        "description": "Universities retrieved successfully",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/product.ProductResponse"
+                                "$ref": "#/definitions/university.UniversityResponse"
                             }
                         }
                     },
@@ -48,14 +48,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/product/create": {
+        "/university/create": {
             "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new product",
+                "description": "Create a new university",
                 "consumes": [
                     "application/json"
                 ],
@@ -63,25 +58,25 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "universities"
                 ],
-                "summary": "Create a new product",
+                "summary": "Create a new university",
                 "parameters": [
                     {
-                        "description": "Product object to be created",
-                        "name": "product",
+                        "description": "University object to be created",
+                        "name": "university",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/product.CreateProductRequest"
+                            "$ref": "#/definitions/university.CreateUniversityRequest"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Product created successfully",
+                        "description": "University created successfully",
                         "schema": {
-                            "$ref": "#/definitions/product.ProductResponse"
+                            "$ref": "#/definitions/university.UniversityResponse"
                         }
                     },
                     "400": {
@@ -101,14 +96,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/product/createMany": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create many products",
+        "/university/id/{id}": {
+            "get": {
+                "description": "Get university by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -116,117 +106,23 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "universities"
                 ],
-                "summary": "Create many products",
+                "summary": "Get university by ID",
                 "parameters": [
                     {
-                        "description": "Products to be created",
-                        "name": "products",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/product.CreateProductRequest"
-                            }
-                        }
+                        "type": "string",
+                        "description": "University ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
-                "responses": {
-                    "201": {
-                        "description": "Products created successfully",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/product.ProductResponse"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request format or parameters",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/all": {
-            "post": {
-                "description": "Get all shops",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shops"
-                ],
-                "summary": "Get all shops",
                 "responses": {
                     "200": {
-                        "description": "Shops retrieved successfully",
+                        "description": "University retrieved successfully",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/shop.ShopResponse"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
-            }
-        },
-        "/shop/create": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new shop",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shops"
-                ],
-                "summary": "Create a new shop",
-                "parameters": [
-                    {
-                        "description": "Shop object to be created",
-                        "name": "shop",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/shop.CreateShopRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Shop created successfully",
-                        "schema": {
-                            "$ref": "#/definitions/shop.ShopResponse"
+                            "$ref": "#/definitions/university.UniversityResponse"
                         }
                     },
                     "400": {
@@ -236,8 +132,8 @@ const docTemplate = `{
                             "additionalProperties": true
                         }
                     },
-                    "500": {
-                        "description": "Internal server error",
+                    "404": {
+                        "description": "University not found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
@@ -525,161 +421,65 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "product.CreateProductRequest": {
+        "university.CreateUniversityRequest": {
             "type": "object",
             "required": [
-                "category",
+                "coverImage",
+                "halls",
+                "location",
                 "name",
-                "sellerId",
-                "variants"
+                "numberOfStudents",
+                "website"
             ],
             "properties": {
-                "category": {
+                "coverImage": {
                     "type": "string"
                 },
-                "description": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "sellerId": {
-                    "type": "string"
-                },
-                "variants": {
+                "halls": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/product.CreateVariantRequest"
+                        "type": "string"
                     }
-                }
-            }
-        },
-        "product.CreateVariantRequest": {
-            "type": "object",
-            "required": [
-                "name",
-                "price",
-                "stock"
-            ],
-            "properties": {
-                "description": {
+                },
+                "location": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "price": {
-                    "type": "number"
-                },
-                "stock": {
-                    "type": "integer"
-                }
-            }
-        },
-        "product.ProductResponse": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "seller": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "variants": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.VariantResponse"
-                    }
-                }
-            }
-        },
-        "product.VariantResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "stock": {
+                "numberOfStudents": {
                     "type": "integer"
                 },
-                "updatedAt": {
+                "website": {
                     "type": "string"
                 }
             }
         },
-        "shop.CreateShopRequest": {
-            "type": "object",
-            "required": [
-                "name",
-                "ownerId"
-            ],
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "ownerId": {
-                    "type": "string"
-                }
-            }
-        },
-        "shop.ShopResponse": {
+        "university.UniversityResponse": {
             "type": "object",
             "properties": {
-                "address": {
+                "coverImage": {
                     "type": "string"
                 },
-                "createdAt": {
-                    "type": "string"
+                "halls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "id": {
                     "type": "string"
                 },
+                "location": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
-                "ownerId": {
-                    "type": "string"
+                "numberOfStudents": {
+                    "type": "integer"
                 },
-                "products": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.ProductResponse"
-                    }
-                },
-                "updatedAt": {
+                "website": {
                     "type": "string"
                 }
             }
@@ -704,11 +504,14 @@ const docTemplate = `{
                 "password": {
                     "type": "string"
                 },
-                "phone": {
+                "university": {
                     "type": "string"
                 },
                 "username": {
                     "type": "string"
+                },
+                "yearOfStudy": {
+                    "type": "integer"
                 }
             }
         },
@@ -753,11 +556,14 @@ const docTemplate = `{
                 "lastName": {
                     "type": "string"
                 },
-                "phone": {
+                "university": {
                     "type": "string"
                 },
                 "username": {
                     "type": "string"
+                },
+                "yearOfStudy": {
+                    "type": "integer"
                 }
             }
         }

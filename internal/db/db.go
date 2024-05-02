@@ -2,20 +2,16 @@ package db
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"student-halls.com/internal/config"
+	"time"
 )
 
-const DATABASE_NAME = "tuaysa"
-const COLLECTION_USERS = "users"
-const COLLECTION_PRODUCTS = "products"
-const COLLECTION_ORDERS = "orders"
-const COLLECTION_CATEGORIES = "categories"
-const COLLECTION_SHOPS = "shops"
+const DATABASE_NAME = "student-halls"
+const COLLECTION_USERS = "user"
+const COLLECTION_UNIVERSITY = "university"
 
 var Client *mongo.Client
 var isConnected bool = false

@@ -12,7 +12,9 @@ import (
 // It loads the configuration, connects to the MongoDB database, sets up the routes, and returns the router.
 //
 // This is done to expose internal functions to the serverless environment.
-func Initialize() *gin.Engine {
+//
+// Returns: router, a clean up function to disconnect from the MongoDB database
+func Initialize() (*gin.Engine, func()) {
 	err := config.LoadConfig()
 	if err != nil {
 		log.Fatal("Error loading config: ", err)
@@ -22,5 +24,8 @@ func Initialize() *gin.Engine {
 	defer db.DisconnectFromMongoDB()
 
 	router := routes.SetupRoutes()
-	return router
+
+	return router, func() {
+		db.DisconnectFromMongoDB()
+	}
 }
