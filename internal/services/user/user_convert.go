@@ -12,12 +12,13 @@ func ConvertCreateUserRequestToUser(req CreateUserRequest) (User, error) {
 		return User{}, err
 	}
 
-	var universityID primitive.ObjectID
-	if req.University != "" {
-		universityID, err = primitive.ObjectIDFromHex(req.University)
+	var universityID *primitive.ObjectID
+	if req.University != nil && *req.University != "" {
+		id, err := primitive.ObjectIDFromHex(*req.University)
 		if err != nil {
 			return User{}, err
 		}
+		universityID = &id
 	}
 
 	return User{
@@ -29,17 +30,24 @@ func ConvertCreateUserRequestToUser(req CreateUserRequest) (User, error) {
 		LastName:    req.LastName,
 		University:  universityID,
 		YearOfStudy: req.YearOfStudy,
+		UserType:    "student",
 	}, nil
 }
 
 func ConvertUserToUserResponse(user User) UserResponse {
+	universityHex := ""
+	if user.University != nil {
+		universityHex = user.University.Hex()
+	}
+
 	return UserResponse{
 		ID:          user.ID.Hex(),
 		Username:    user.Username,
 		Email:       user.Email,
 		FirstName:   user.FirstName,
 		LastName:    user.LastName,
-		University:  user.University.Hex(),
+		University:  &universityHex,
 		YearOfStudy: user.YearOfStudy,
+		UserType:    user.UserType,
 	}
 }

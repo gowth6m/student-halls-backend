@@ -30,26 +30,27 @@ type LoginRequest struct {
 // ------------------------------------------ CREATE OBJECTS -----------------------------------------
 // ---------------------------------------------------------------------------------------------------
 type CreateUserRequest struct {
-	Username    string `json:"username" binding:"required"`
-	Password    string `json:"password" binding:"required"`
-	Email       string `json:"email" binding:"required"`
-	FirstName   string `json:"firstName"`
-	LastName    string `json:"lastName"`
-	University  string `json:"university"`
-	YearOfStudy int    `json:"yearOfStudy"`
+	Username    string  `json:"username" binding:"required"`
+	Password    string  `json:"password" binding:"required"`
+	Email       string  `json:"email" binding:"required"`
+	FirstName   string  `json:"firstName"`
+	LastName    string  `json:"lastName"`
+	University  *string `json:"university"`
+	YearOfStudy *int    `json:"yearOfStudy"`
 }
 
 // ---------------------------------------------------------------------------------------------------
 // ----------------------------------------- RESPONSE OBJECTS ----------------------------------------
 // ---------------------------------------------------------------------------------------------------
 type UserResponse struct {
-	ID          string `json:"id,omitempty"`
-	Username    string `json:"username"`
-	Email       string `json:"email"`
-	FirstName   string `json:"firstName,omitempty"`
-	LastName    string `json:"lastName,omitempty"`
-	University  string `json:"university,omitempty"`
-	YearOfStudy int    `json:"yearOfStudy,omitempty"`
+	ID          string  `json:"id,omitempty"`
+	Username    string  `json:"username"`
+	Email       string  `json:"email"`
+	FirstName   string  `json:"firstName,omitempty"`
+	LastName    string  `json:"lastName,omitempty"`
+	University  *string `json:"university,omitempty"`
+	YearOfStudy *int    `json:"yearOfStudy,omitempty"`
+	UserType    string  `json:"userType,omitempty"`
 }
 
 type LoginResponse struct {
@@ -61,14 +62,15 @@ type LoginResponse struct {
 // ------------------------------------------ MONGO OBJECTS ------------------------------------------
 // ---------------------------------------------------------------------------------------------------
 type User struct {
-	ID          primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty" validate:"required"`
-	Username    string             `json:"username,omitempty" bson:"username,omitempty" validate:"required"`
-	Password    string             `json:"-" bson:"password,omitempty" validate:"required"`
-	Email       string             `json:"email" bson:"email" validate:"required,email"`
-	FirstName   string             `json:"firstName,omitempty" bson:"firstName,omitempty"`
-	LastName    string             `json:"lastName,omitempty" bson:"lastName,omitempty"`
-	University  primitive.ObjectID `json:"university,omitempty" bson:"university,omitempty"`
-	YearOfStudy int                `json:"yearOfStudy,omitempty" bson:"yearOfStudy,omitempty"`
-	CreatedAt   primitive.DateTime `json:"createdAt,omitempty" bson:"createdAt,omitempty"`
-	UpdatedAt   primitive.DateTime `json:"updatedAt,omitempty" bson:"updatedAt,omitempty"`
+	ID          primitive.ObjectID  `json:"id,omitempty" bson:"_id,omitempty" validate:"required"`
+	Username    string              `json:"username,omitempty" bson:"username,omitempty" validate:"required"`
+	Password    string              `json:"-" bson:"password,omitempty" validate:"required"`
+	Email       string              `json:"email" bson:"email" validate:"required,email"`
+	FirstName   string              `json:"firstName,omitempty" bson:"firstName,omitempty"`
+	LastName    string              `json:"lastName,omitempty" bson:"lastName,omitempty"`
+	University  *primitive.ObjectID `json:"university,omitempty" bson:"university,omitempty"`
+	YearOfStudy *int                `json:"yearOfStudy,omitempty" bson:"yearOfStudy,omitempty"`
+	UserType    string              `json:"userType,omitempty" bson:"userType,omitempty"`
+	CreatedAt   primitive.DateTime  `json:"createdAt,omitempty" bson:"createdAt,omitempty"`
+	UpdatedAt   primitive.DateTime  `json:"updatedAt,omitempty" bson:"updatedAt,omitempty"`
 }

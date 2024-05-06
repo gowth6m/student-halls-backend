@@ -1,10 +1,9 @@
 package user
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 	"student-halls.com/internal/api"
 	"student-halls.com/internal/middleware"
 )
@@ -156,13 +155,18 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 		return
 	}
 
+	universityHex := ""
+	if user.University != nil {
+		universityHex = user.University.Hex()
+	}
+
 	userRes := UserResponse{
 		ID:          user.ID.Hex(),
 		Username:    user.Username,
 		Email:       user.Email,
 		FirstName:   user.FirstName,
 		LastName:    user.LastName,
-		University:  user.University.Hex(),
+		University:  &universityHex,
 		YearOfStudy: user.YearOfStudy,
 	}
 
