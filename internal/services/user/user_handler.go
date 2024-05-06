@@ -155,9 +155,10 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 		return
 	}
 
-	universityHex := ""
+	var universityHex *string
 	if user.University != nil {
-		universityHex = user.University.Hex()
+		hex := user.University.Hex()
+		universityHex = &hex
 	}
 
 	userRes := UserResponse{
@@ -166,8 +167,10 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 		Email:       user.Email,
 		FirstName:   user.FirstName,
 		LastName:    user.LastName,
-		University:  &universityHex,
+		University:  universityHex,
 		YearOfStudy: user.YearOfStudy,
+		UserType:    user.UserType,
+		UserImg:     user.UserImg,
 	}
 
 	api.Success(c, http.StatusOK, "User logged in successfully", LoginResponse{

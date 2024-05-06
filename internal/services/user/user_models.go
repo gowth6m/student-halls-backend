@@ -51,6 +51,7 @@ type UserResponse struct {
 	University  *string `json:"university,omitempty"`
 	YearOfStudy *int    `json:"yearOfStudy,omitempty"`
 	UserType    string  `json:"userType,omitempty"`
+	UserImg     *string `json:"userImg,omitempty"`
 }
 
 type LoginResponse struct {
@@ -71,6 +72,7 @@ type User struct {
 	University  *primitive.ObjectID `json:"university,omitempty" bson:"university,omitempty"`
 	YearOfStudy *int                `json:"yearOfStudy,omitempty" bson:"yearOfStudy,omitempty"`
 	UserType    string              `json:"userType,omitempty" bson:"userType,omitempty"`
+	UserImg     *string             `json:"userImg,omitempty" bson:"userImg,omitempty"`
 	CreatedAt   primitive.DateTime  `json:"createdAt,omitempty" bson:"createdAt,omitempty"`
 	UpdatedAt   primitive.DateTime  `json:"updatedAt,omitempty" bson:"updatedAt,omitempty"`
 }

@@ -49,5 +49,6 @@ func ConvertUserToUserResponse(user User) UserResponse {
 		University:  &universityHex,
 		YearOfStudy: user.YearOfStudy,
 		UserType:    user.UserType,
+		UserImg:     user.UserImg,
 	}
 }
