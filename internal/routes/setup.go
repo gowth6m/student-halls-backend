@@ -5,11 +5,8 @@ import (
 	"student-halls.com/internal/config"
 )
 
-// Routes
-func SetupRoutes() *gin.Engine {
-	// Initialize the router
-	router := gin.Default()
-
+func SetupRoutes(router *gin.Engine) {
+	// No version routes
 	SwaggerRoutes(router)
 	NoVersionRoutes(router)
 
@@ -18,6 +15,4 @@ func SetupRoutes() *gin.Engine {
 	DefaultRoutes(versionControlled)
 	UserRoutes(versionControlled)
 	UniversityRoutes(versionControlled)
-
-	return router
 }

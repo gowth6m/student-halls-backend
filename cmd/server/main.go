@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"log"
 	"student-halls.com/internal/config"
 	"student-halls.com/internal/db"
@@ -25,6 +27,15 @@ func main() {
 	db.ConnectToMongoDB()
 	defer db.DisconnectFromMongoDB()
 
-	router := routes.SetupRoutes()
+	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowWildcard:    true,
+	}))
+	routes.SetupRoutes(router)
 	router.Run(config.AppConfig().App.Host + ":" + config.AppConfig().App.Port)
 }
