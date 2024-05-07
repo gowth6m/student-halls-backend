@@ -1,5 +1,75 @@
 basePath: /v0
 definitions:
+  hall.CreateHallRequest:
+    properties:
+      coverImage:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      postalCode:
+        type: string
+      reviews:
+        items:
+          type: string
+        type: array
+      universityId:
+        type: string
+    required:
+    - coverImage
+    - location
+    - name
+    - postalCode
+    - reviews
+    - universityId
+    type: object
+  hall.Hall:
+    properties:
+      coverImage:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      postalCode:
+        type: string
+      reviews:
+        items:
+          type: string
+        type: array
+      university:
+        type: string
+    required:
+    - coverImage
+    - id
+    - location
+    - name
+    - postalCode
+    - reviews
+    - university
+    type: object
+  hall.HallResponse:
+    properties:
+      coverImage:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      postalCode:
+        type: string
+      reviews:
+        items:
+          type: string
+        type: array
+      university:
+        type: string
+    type: object
   university.CreateUniversityRequest:
     properties:
       coverImage:
@@ -52,15 +122,22 @@ definitions:
       lastName:
         type: string
       password:
+        minLength: 6
         type: string
       university:
         type: string
       username:
+        maxLength: 30
+        minLength: 3
         type: string
       yearOfStudy:
+        maximum: 5
+        minimum: 1
         type: integer
     required:
     - email
+    - firstName
+    - lastName
     - password
     - username
     type: object
@@ -93,6 +170,10 @@ definitions:
         type: string
       university:
         type: string
+      userImg:
+        type: string
+      userType:
+        type: string
       username:
         type: string
       yearOfStudy:
@@ -105,6 +186,150 @@ info:
   title: Student Halls API
   version: "1"
 paths:
+  /hall/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get hall by ID
+      parameters:
+      - description: Hall ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hall retrieved successfully
+          schema:
+            $ref: '#/definitions/hall.HallResponse'
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Hall not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get hall by ID
+      tags:
+      - halls
+  /hall/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all halls
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Halls retrieved successfully
+          schema:
+            items:
+              $ref: '#/definitions/hall.HallResponse'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all halls
+      tags:
+      - halls
+  /hall/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new hall
+      parameters:
+      - description: Hall object to be created
+        in: body
+        name: hall
+        required: true
+        schema:
+          $ref: '#/definitions/hall.CreateHallRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Hall created successfully
+          schema:
+            $ref: '#/definitions/hall.HallResponse'
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new hall
+      tags:
+      - halls
+  /university/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get university by ID
+      parameters:
+      - description: University ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: University retrieved successfully
+          schema:
+            $ref: '#/definitions/university.UniversityResponse'
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: University not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get university by ID
+      tags:
+      - universities
+  /university/{id}/halls:
+    get:
+      consumes:
+      - application/json
+      description: Get halls by university ID
+      parameters:
+      - description: University ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Halls retrieved successfully
+          schema:
+            items:
+              $ref: '#/definitions/hall.Hall'
+            type: array
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get halls by university ID
+      tags:
+      - universities
   /university/all:
     get:
       consumes:
@@ -157,37 +382,6 @@ paths:
             additionalProperties: true
             type: object
       summary: Create a new university
-      tags:
-      - universities
-  /university/id/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Get university by ID
-      parameters:
-      - description: University ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: University retrieved successfully
-          schema:
-            $ref: '#/definitions/university.UniversityResponse'
-        "400":
-          description: Invalid request format or parameters
-          schema:
-            additionalProperties: true
-            type: object
-        "404":
-          description: University not found
-          schema:
-            additionalProperties: true
-            type: object
-      summary: Get university by ID
       tags:
       - universities
   /user/{username}:

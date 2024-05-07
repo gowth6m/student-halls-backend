@@ -8,12 +8,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"student-halls.com/internal/db"
+	"student-halls.com/internal/services/hall"
 )
 
 type UniversityRepository interface {
 	CreateUniversity(c context.Context, university University) (University, error)
 	GetAllUniversities(c context.Context) ([]University, error)
 	GetUniversityByID(c context.Context, id string) (*University, error)
+	GetAllHallsByUniversityID(c context.Context, universityID string) ([]hall.Hall, error)
 }
 
 type repositoryImpl struct {
@@ -74,4 +76,25 @@ func (r *repositoryImpl) GetUniversityByID(c context.Context, id string) (*Unive
 	}
 
 	return &university, nil
+}
+
+func (r *repositoryImpl) GetAllHallsByUniversityID(c context.Context, universityID string) ([]hall.Hall, error) {
+	uID, err := primitive.ObjectIDFromHex(universityID)
+	if err != nil {
+		return nil, err
+	}
+
+	filter := bson.M{"university": uID}
+	cursor, err := r.collection.Find(c, filter)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(c)
+
+	var halls []hall.Hall
+	if err := cursor.All(c, &halls); err != nil {
+		return nil, err
+	}
+
+	return halls, nil
 }

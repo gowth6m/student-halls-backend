@@ -30,13 +30,13 @@ type LoginRequest struct {
 // ------------------------------------------ CREATE OBJECTS -----------------------------------------
 // ---------------------------------------------------------------------------------------------------
 type CreateUserRequest struct {
-	Username    string  `json:"username" binding:"required"`
-	Password    string  `json:"password" binding:"required"`
-	Email       string  `json:"email" binding:"required"`
-	FirstName   string  `json:"firstName"`
-	LastName    string  `json:"lastName"`
-	University  *string `json:"university"`
-	YearOfStudy *int    `json:"yearOfStudy"`
+	Username    string  `json:"username" binding:"required,alphanum,min=3,max=30"`
+	Password    string  `json:"password" binding:"required,min=6"`
+	Email       string  `json:"email" binding:"required,email"`
+	FirstName   string  `json:"firstName" binding:"required,alpha"`
+	LastName    string  `json:"lastName" binding:"required,alpha"`
+	University  *string `json:"university" binding:"omitempty,hexadecimal,len=24"`
+	YearOfStudy *int    `json:"yearOfStudy" binding:"omitempty,min=1,max=5"`
 }
 
 // ---------------------------------------------------------------------------------------------------

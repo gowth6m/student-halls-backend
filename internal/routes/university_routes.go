@@ -21,8 +21,11 @@ func UniversityRoutes(group *gin.RouterGroup) {
 		universityHandler.GetAllUniversities(c)
 	})
 
-	universityGroup.GET("/id/:id", func(c *gin.Context) {
+	universityGroup.GET("/:id", func(c *gin.Context) {
 		universityHandler.GetUniversityByID(c)
 	})
 
+	universityGroup.GET("/:id/halls", func(c *gin.Context) {
+		universityHandler.GetHallsByUniversityID(c)
+	})
 }

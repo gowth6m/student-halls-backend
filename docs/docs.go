@@ -15,6 +15,133 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/hall/all": {
+            "get": {
+                "description": "Get all halls",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "halls"
+                ],
+                "summary": "Get all halls",
+                "responses": {
+                    "200": {
+                        "description": "Halls retrieved successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/hall.HallResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hall/create": {
+            "post": {
+                "description": "Create a new hall",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "halls"
+                ],
+                "summary": "Create a new hall",
+                "parameters": [
+                    {
+                        "description": "Hall object to be created",
+                        "name": "hall",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hall.CreateHallRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Hall created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/hall.HallResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request format or parameters",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hall/{id}": {
+            "get": {
+                "description": "Get hall by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "halls"
+                ],
+                "summary": "Get hall by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Hall ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hall retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/hall.HallResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request format or parameters",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Hall not found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/university/all": {
             "get": {
                 "description": "Get all universities",
@@ -96,7 +223,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/university/id/{id}": {
+        "/university/{id}": {
             "get": {
                 "description": "Get university by ID",
                 "consumes": [
@@ -134,6 +261,48 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "University not found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/university/{id}/halls": {
+            "get": {
+                "description": "Get halls by university ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "universities"
+                ],
+                "summary": "Get halls by university ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "University ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Halls retrieved successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/hall.Hall"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request format or parameters",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
@@ -421,6 +590,107 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "hall.CreateHallRequest": {
+            "type": "object",
+            "required": [
+                "coverImage",
+                "location",
+                "name",
+                "postalCode",
+                "reviews",
+                "universityId"
+            ],
+            "properties": {
+                "coverImage": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "postalCode": {
+                    "type": "string"
+                },
+                "reviews": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "universityId": {
+                    "type": "string"
+                }
+            }
+        },
+        "hall.Hall": {
+            "type": "object",
+            "required": [
+                "coverImage",
+                "id",
+                "location",
+                "name",
+                "postalCode",
+                "reviews",
+                "university"
+            ],
+            "properties": {
+                "coverImage": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "postalCode": {
+                    "type": "string"
+                },
+                "reviews": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "university": {
+                    "type": "string"
+                }
+            }
+        },
+        "hall.HallResponse": {
+            "type": "object",
+            "properties": {
+                "coverImage": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "postalCode": {
+                    "type": "string"
+                },
+                "reviews": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "university": {
+                    "type": "string"
+                }
+            }
+        },
         "university.CreateUniversityRequest": {
             "type": "object",
             "required": [
@@ -488,6 +758,8 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "email",
+                "firstName",
+                "lastName",
                 "password",
                 "username"
             ],
@@ -502,16 +774,21 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 6
                 },
                 "university": {
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 3
                 },
                 "yearOfStudy": {
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 5,
+                    "minimum": 1
                 }
             }
         },
@@ -557,6 +834,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "university": {
+                    "type": "string"
+                },
+                "userImg": {
+                    "type": "string"
+                },
+                "userType": {
                     "type": "string"
                 },
                 "username": {

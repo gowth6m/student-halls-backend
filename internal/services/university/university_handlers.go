@@ -74,7 +74,7 @@ func (h *UniversityHandler) GetAllUniversities(c *gin.Context) {
 // @Success 200 {object} UniversityResponse "University retrieved successfully"
 // @Failure 400 {object} map[string]interface{} "Invalid request format or parameters"
 // @Failure 404 {object} map[string]interface{} "University not found"
-// @Router /university/id/{id} [get]
+// @Router /university/{id} [get]
 func (h *UniversityHandler) GetUniversityByID(c *gin.Context) {
 	university, err := h.Repo.GetUniversityByID(c.Request.Context(), c.Param("id"))
 
@@ -86,4 +86,23 @@ func (h *UniversityHandler) GetUniversityByID(c *gin.Context) {
 	universityRes := ConvertUniversityToUniversityResponse(*university)
 
 	api.Success(c, http.StatusOK, "Retrieved university successfully", universityRes)
+}
+
+// @Summary Get halls by university ID
+// @Description Get halls by university ID
+// @Tags universities
+// @Accept json
+// @Produce json
+// @Param id path string true "University ID"
+// @Success 200 {object} []hall.Hall "Halls retrieved successfully"
+// @Failure 400 {object} map[string]interface{} "Invalid request format or parameters"
+// @Router /university/{id}/halls [get]
+func (h *UniversityHandler) GetHallsByUniversityID(c *gin.Context) {
+	halls, err := h.Repo.GetAllHallsByUniversityID(c.Request.Context(), c.Param("id"))
+	if err != nil {
+		api.Error(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	api.Success(c, http.StatusOK, "Retrieved halls successfully", halls)
 }

@@ -12,6 +12,7 @@ import (
 const DATABASE_NAME = "student-halls"
 const COLLECTION_USERS = "user"
 const COLLECTION_UNIVERSITY = "university"
+const COLLECTION_HALL = "hall"
 
 var Client *mongo.Client
 var isConnected bool = false
