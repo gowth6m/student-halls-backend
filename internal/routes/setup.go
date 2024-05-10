@@ -16,4 +16,5 @@ func SetupRoutes(router *gin.Engine) {
 	UserRoutes(versionControlled)
 	UniversityRoutes(versionControlled)
 	HallRoutes(versionControlled)
+	SearchRoutes(versionControlled)
 }

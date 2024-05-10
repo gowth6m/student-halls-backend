@@ -70,6 +70,17 @@ definitions:
       university:
         type: string
     type: object
+  search.SearchResult:
+    properties:
+      halls:
+        items:
+          $ref: '#/definitions/hall.Hall'
+        type: array
+      universities:
+        items:
+          $ref: '#/definitions/university.University'
+        type: array
+    type: object
   university.CreateUniversityRequest:
     properties:
       coverImage:
@@ -89,6 +100,33 @@ definitions:
     required:
     - coverImage
     - halls
+    - location
+    - name
+    - numberOfStudents
+    - website
+    type: object
+  university.University:
+    properties:
+      coverImage:
+        type: string
+      halls:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      numberOfStudents:
+        type: integer
+      website:
+        type: string
+    required:
+    - coverImage
+    - halls
+    - id
     - location
     - name
     - numberOfStudents
@@ -271,6 +309,37 @@ paths:
       summary: Create a new hall
       tags:
       - halls
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: Search for universities and halls
+      parameters:
+      - description: Search query
+        in: query
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search results retrieved successfully
+          schema:
+            $ref: '#/definitions/search.SearchResult'
+        "400":
+          description: Invalid request format or parameters
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Search for universities and halls
+      tags:
+      - search
   /university/{id}:
     get:
       consumes:

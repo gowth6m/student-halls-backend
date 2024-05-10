@@ -142,6 +142,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/search": {
+            "get": {
+                "description": "Search for universities and halls",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "search"
+                ],
+                "summary": "Search for universities and halls",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search query",
+                        "name": "query",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/search.SearchResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request format or parameters",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/university/all": {
             "get": {
                 "description": "Get all universities",
@@ -691,6 +737,23 @@ const docTemplate = `{
                 }
             }
         },
+        "search.SearchResult": {
+            "type": "object",
+            "properties": {
+                "halls": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hall.Hall"
+                    }
+                },
+                "universities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/university.University"
+                    }
+                }
+            }
+        },
         "university.CreateUniversityRequest": {
             "type": "object",
             "required": [
@@ -710,6 +773,44 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "numberOfStudents": {
+                    "type": "integer"
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
+        "university.University": {
+            "type": "object",
+            "required": [
+                "coverImage",
+                "halls",
+                "id",
+                "location",
+                "name",
+                "numberOfStudents",
+                "website"
+            ],
+            "properties": {
+                "coverImage": {
+                    "type": "string"
+                },
+                "halls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "string"
                 },
                 "location": {
                     "type": "string"
